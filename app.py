@@ -111,7 +111,7 @@ with st.expander("Incidence"):
     st.image(img)
 
 
-with st.expander("Moyenne des Valeur résiduelle par segment de marché "):
+with st.expander("Moyenne des valeurs résiduelles par segment de marché "):
     st.plotly_chart(fig, use_container_width=True)
 
 fig1 = px.scatter(
