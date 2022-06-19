@@ -83,7 +83,7 @@ with st.sidebar:
 
         x_s = {
             cat: st.slider(
-                cat, min_value=df[df['Segment de marché']==cat]['min'].max(), max_value=df[df['Segment de marché']==cat]['min'].max(), value=(df[df['Segment de marché']==cat]['min'].max()+df[df['Segment de marché']==cat]['max'].max())/2., step=1, key=cat
+                cat, min_value=df[df['Segment de marché']==cat]['min'].max(), max_value=df[df['Segment de marché']==cat]['min'].max(), value=float(df[df['Segment de marché']==cat]['min'].max()+df[df['Segment de marché']==cat]['max'].max())/2., step=1, key=cat
             )
             for cat in categories
         }
