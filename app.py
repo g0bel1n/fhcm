@@ -79,11 +79,11 @@ with st.sidebar:
         
         st.write("Ajustez le prix neuf estimé selon les segments de marché.")
 
-        st.info("Vers 1, le prix neuf estimé est le prix maximum trouvé en ligne \n. À 0, c'est le prix minimum. Entre 0 et 1, on obtient une pondération entre les deux. La valeur 0.5 correspond à la valeur moyenne")
+        st.info("Prix extrêmaux constatés")
 
         x_s = {
             cat: st.slider(
-                cat, min_value=df[df['Segment de marché']==cat]['min'].max(), max_value=df[df['Segment de marché']==cat]['min'].max(), value=0.5, step=0.1, key=cat
+                cat, min_value=df[df['Segment de marché']==cat]['min'].max(), max_value=df[df['Segment de marché']==cat]['min'].max(), value=(df[df['Segment de marché']==cat]['min'].max()+df[df['Segment de marché']==cat]['max'].max())/2., step=1, key=cat
             )
             for cat in categories
         }
