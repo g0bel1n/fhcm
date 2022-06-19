@@ -52,6 +52,15 @@ category_orders = {
 }
 
 categories = category_orders["Segment de marché"]
+
+website = "vestco" if website == "Vestiaire collective" else website.lower()
+df = pd.read_csv(
+    f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
+)
+df = df[~(df["max"] == "/")]
+df["max"] = df["max"].astype(float)
+df["min"] = df["min"].astype(float)
+
 with st.sidebar:
     logo = Image.open('src/LOGO-ENSAE.png')
 
@@ -72,7 +81,7 @@ with st.sidebar:
 
         x_s = {
             cat: st.slider(
-                cat, min_value=0.0, max_value=1.0, value=0.5, step=0.1, key=cat
+                cat, min_value=df[df['Segment de marché']==cat]['min'].max(), max_value=df[df['Segment de marché']==cat]['min'].max(), value=0.5, step=0.1, key=cat
             )
             for cat in categories
         }
@@ -80,13 +89,7 @@ with st.sidebar:
     st.image(logo)
 
 
-website = "vestco" if website == "Vestiaire collective" else website.lower()
-df = pd.read_csv(
-    f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
-)
-df = df[~(df["max"] == "/")]
-df["max"] = df["max"].astype(float)
-df["min"] = df["min"].astype(float)
+
 
 df["prix neuf"] = df.apply(
     lambda x: (
