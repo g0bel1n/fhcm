@@ -53,13 +53,7 @@ category_orders = {
 
 categories = category_orders["Segment de marché"]
 
-website = "vestco" if website == "Vestiaire collective" else website.lower()
-df = pd.read_csv(
-    f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
-)
-df = df[~(df["max"] == "/")]
-df["max"] = df["max"].astype(float)
-df["min"] = df["min"].astype(float)
+
 
 with st.sidebar:
     logo = Image.open('src/LOGO-ENSAE.png')
@@ -72,6 +66,14 @@ with st.sidebar:
     website = st.selectbox(
         "Choisissez le site considéré", ("Vinted", "Vestiaire collective")
     )
+
+    website = "vestco" if website == "Vestiaire collective" else website.lower()
+    df = pd.read_csv(
+        f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
+    )
+    df = df[~(df["max"] == "/")]
+    df["max"] = df["max"].astype(float)
+    df["min"] = df["min"].astype(float)
 
     with st.expander("Modifier l'estimation du prix neuf"):
         
