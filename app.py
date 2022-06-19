@@ -7,6 +7,8 @@ from PIL import Image
 
 pd.options.plotting.backend = "plotly"
 
+logoeje = Image.open('src/logoeje.png')
+
 col1, col2, col3 = st.columns([3,6,3])
 
 with col1:
@@ -18,7 +20,6 @@ with col2:
 
 
 with col3:
-    logoeje = Image.open('src/logoeje.png')
     st.image(logoeje)
 
 
