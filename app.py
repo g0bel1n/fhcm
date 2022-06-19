@@ -52,9 +52,6 @@ category_orders = {
 }
 
 categories = category_orders["Segment de marché"]
-
-
-
 with st.sidebar:
     logo = Image.open('src/LOGO-ENSAE.png')
 
@@ -67,23 +64,15 @@ with st.sidebar:
         "Choisissez le site considéré", ("Vinted", "Vestiaire collective")
     )
 
-    website = "vestco" if website == "Vestiaire collective" else website.lower()
-    df = pd.read_csv(
-        f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
-    )
-    df = df[~(df["max"] == "/")]
-    df["max"] = df["max"].astype(float)
-    df["min"] = df["min"].astype(float)
-
     with st.expander("Modifier l'estimation du prix neuf"):
         
         st.write("Ajustez le prix neuf estimé selon les segments de marché.")
 
-        st.info("Prix extrêmaux constatés")
+        st.info("Vers 1, le prix neuf estimé est le prix maximum trouvé en ligne \n. À 0, c'est le prix minimum. Entre 0 et 1, on obtient une pondération entre les deux. La valeur 0.5 correspond à la valeur moyenne")
 
         x_s = {
             cat: st.slider(
-                cat, min_value=df[df['Segment de marché']==cat]['min'].max(), max_value=df[df['Segment de marché']==cat]['min'].max(), value=float(df[df['Segment de marché']==cat]['min'].max()+df[df['Segment de marché']==cat]['max'].max())/2., step=1, key=cat
+                cat, min_value=0.0, max_value=1.0, value=0.5, step=0.1, key=cat
             )
             for cat in categories
         }
@@ -91,7 +80,13 @@ with st.sidebar:
     st.image(logo)
 
 
-
+website = "vestco" if website == "Vestiaire collective" else website.lower()
+df = pd.read_csv(
+    f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
+)
+df = df[~(df["max"] == "/")]
+df["max"] = df["max"].astype(float)
+df["min"] = df["min"].astype(float)
 
 df["prix neuf"] = df.apply(
     lambda x: (
