@@ -79,7 +79,7 @@ with st.sidebar:
     st.image(logo)
 
 
-website = "vestco" if website == "Vestiaire collective" else website
+website = "vestco" if website == "Vestiaire collective" else website.lower()
 df = pd.read_csv(
     f"src/scrapping/{website}/focus/focus_{website}_{option.lower().split(' ')[-1]}.csv"
 )
