@@ -7,9 +7,9 @@ from PIL import Image
 
 pd.options.plotting.backend = "plotly"
 
-logoeje = Image.open('src/logoeje.png')
+logoeje = Image.open("src/logoeje.png")
 
-col1, col2, col3 = st.columns([3,6,3])
+col1, col2, col3 = st.columns([3, 6, 3])
 
 with col1:
     st.write("Lucas Saban lucas.saban[at]ensae.fr")
@@ -21,7 +21,6 @@ with col2:
 
 with col3:
     st.image(logoeje)
-
 
 
 category_orders = {
@@ -53,9 +52,8 @@ category_orders = {
 
 categories = category_orders["Segment de marché"]
 with st.sidebar:
-    logo = Image.open('src/LOGO-ENSAE.png')
+    logo = Image.open("src/LOGO-ENSAE.png")
 
-    
     option = st.selectbox(
         "Choisissez le produit considéré",
         ("Jean", "Veste de Costume", "Baskets", "Tshirt"),
@@ -65,10 +63,12 @@ with st.sidebar:
     )
 
     with st.expander("Modifier l'estimation du prix neuf"):
-        
+
         st.write("Ajustez le prix neuf estimé selon les segments de marché.")
 
-        st.info("Vers 1, le prix neuf estimé est le prix maximum trouvé en ligne \n. À 0, c'est le prix minimum. Entre 0 et 1, on obtient une pondération entre les deux. La valeur 0.5 correspond à la valeur moyenne")
+        st.info(
+            "Vers 1, le prix neuf estimé est le prix maximum trouvé en ligne \n. À 0, c'est le prix minimum. Entre 0 et 1, on obtient une pondération entre les deux. La valeur 0.5 correspond à la valeur moyenne"
+        )
 
         x_s = {
             cat: st.slider(
@@ -107,9 +107,24 @@ fig = px.histogram(
     text_auto=True,
 )
 
-img = Image.open(f"src/scrapping/{website}/incidence/incidence_{website}_{option.lower().split(' ')[-1]}.png")
+img = Image.open(
+    f"src/scrapping/{website}/incidence/incidence_{website}_{option.lower().split(' ')[-1]}.png"
+)
+
+df_incidence = pd.read_csv(
+    f"src/scrapping/{website}/incidence/complete_incidence_{website}_{option.lower().split(' ')[-1]}.csv"
+)
+fig2 = fig = px.histogram(
+    df_incidence,
+    x="Segment de marché",
+    y="incidence",
+    histfunc="sum",
+    category_orders=category_orders,
+    text_auto=True,
+)
+
 with st.expander("Incidence"):
-    st.image(img)
+    st.plotly_chart(fig2, use_container_width=True)
 
 
 with st.expander("Moyenne des valeurs résiduelles par segment de marché "):
@@ -124,5 +139,3 @@ fig1 = px.scatter(
 )
 with st.expander("Valeur résiduelle en fonction du prix de revente"):
     st.plotly_chart(fig1, use_container_width=True)
-
-

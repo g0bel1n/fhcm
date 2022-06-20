@@ -1,3 +1,5 @@
+
+#%%
 import os
 
 from gsheets import Sheets
@@ -14,7 +16,7 @@ def get_brands_list():
 
     sheets = Sheets.from_files("../client_secrets.json")
 
-    with open("../../config.yml", "r") as yml_file:
+    with open("../../../config.yml", "r") as yml_file:
         config = yaml.safe_load(yml_file)
 
     s = sheets[config["gsheet_id"]]
@@ -30,15 +32,15 @@ brands_name, sheet_df = get_brands_list()
 
 #%%
 dfs = {}
-global_incidence = pd.read_csv("vinted/global_incidence_vinted.csv")
+global_incidence = pd.read_csv("global_incidence_vinted.csv")
 global_incidence['brand'] = global_incidence['brand'].apply(lambda x : unidecode.unidecode(x))
 global_incidence = global_incidence.set_index("brand")
 global_incidence.index = global_incidence.index.str.lower().str.replace(' ','')
 sheet_df['N°Obs']=sheet_df['N°Obs'].apply(lambda x : unidecode.unidecode(x.lower().replace(' ','')))
 for product in [
-    el for el in os.listdir("vinted/incidence") if el.endswith("csv")
+    el for el in os.listdir() if el.endswith("csv")
 ]:
-    df = pd.read_csv("vinted/incidence/" + product)
+    df = pd.read_csv( product)
     df['brand'] = df['brand'].apply(lambda x : unidecode.unidecode(x)).str.replace(' ','')
     df = df.set_index("brand")
     df.index = df.index.str.lower()
@@ -50,7 +52,7 @@ for product in [
     ]
 
     df = df.merge(sheet_df, left_index=True, right_on="N°Obs")[['incidence', 'global_incidence', 'N°Obs', 'Segment de marché','Niveau de prix']].set_index('N°Obs')
-
+    df.to_csv(f'complete_incidence_vinted_{product.split(".")[0].split("_")[-1]}.csv')
     dfs[product.split(".")[0].split("_")[-1]] = df
 
 
