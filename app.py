@@ -114,7 +114,7 @@ img = Image.open(
 df_incidence = pd.read_csv(
     f"src/scrapping/{website}/incidence/complete_incidence_{website}_{option.lower().split(' ')[-1]}.csv"
 )
-fig2 = fig = px.histogram(
+fig2 = px.histogram(
     df_incidence,
     x="Segment de marché",
     y="incidence",
