@@ -107,6 +107,24 @@ fig = px.histogram(
     text_auto=True,
 )
 
+fig_01 = px.histogram(
+    data_frame=df,
+    y="prix",
+    histfunc="avg",
+    x="Segment de marché",
+    category_orders=category_orders,
+    text_auto=True,
+)
+
+fig_02 = px.histogram(
+    data_frame=df,
+    y="prix neuf",
+    histfunc="avg",
+    x="Segment de marché",
+    category_orders=category_orders,
+    text_auto=True,
+)
+
 img = Image.open(
     f"src/scrapping/{website}/incidence/incidence_{website}_{option.lower().split(' ')[-1]}.png"
 )
@@ -139,3 +157,10 @@ fig1 = px.scatter(
 )
 with st.expander("Valeur résiduelle en fonction du prix de revente"):
     st.plotly_chart(fig1, use_container_width=True)
+
+
+with st.expander("Prix de revente par segment de marché"):
+    st.plotly_chart(fig_01, use_container_width=True)
+
+with st.expander("Prix d'achat estimé"):
+    st.plotly_chart(fig_02, use_container_width=True)
