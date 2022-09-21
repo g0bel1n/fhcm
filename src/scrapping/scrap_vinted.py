@@ -1,4 +1,8 @@
 #%%
+ #This notebook was done in VSCODE, cells are expected to be run top to bottom.
+#First part is for scrapping incidence. It is followed by some plots and manipulation to extract the brand that will be scrapped in depth in the next lines.
+# Sometimes some cut are made in list. It was for computation reasons and might not be necessary.
+#%%
 import contextlib
 import itertools
 from multiprocessing.connection import wait

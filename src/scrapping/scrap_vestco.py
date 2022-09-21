@@ -1,19 +1,26 @@
 #%%
+#This notebook was done in VSCODE, cells are expected to be run top to bottom.
+#First part is for scrapping incidence. It is followed by some plots and manipulation to extract the brand that will be scrapped in depth in the next lines.
+# Sometimes some cut are made in list. It was for computation reasons and might not be necessary.
+#
+#%%
 import contextlib
 import itertools
 from multiprocessing.connection import wait
 from time import time
 from webbrowser import Chrome
-from gsheets import Sheets
-from tenacity import sleep
-from selenium.webdriver.common.keys import Keys
-import yaml
+
 import pandas as pd
+import plotly.express as px
+import unidecode
+import yaml
+from gsheets import Sheets
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
-import unidecode
+from tenacity import sleep
 
 
 #%%
@@ -127,8 +134,6 @@ df1 = pd.read_csv("incidence_vesco.csv")
 # %%
 df1 = df1.merge(df, on="brand")
 # %%
-import numpy as np
-
 df1["incidence"] = df1.incidence_x.apply(
     lambda x: int(x) if not (pd.isna(x) or x == "NaN") else 0
 ) + df1.incidence_y.apply(lambda x: int(x) if not (pd.isna(x) or x == "NaN") else 0)
@@ -136,8 +141,6 @@ df1["incidence"] = df1.incidence_x.apply(
 df2 = df1.merge(sheet_df, right_on="N°Obs", left_on="brand")
 df2 = df2[["brand", "Segment de marché", "incidence", "Niveau de prix"]]
 # %%
-import pandas as pd
-import plotly.express as px
 
 category_orders = {
     "Niveau de prix": [
@@ -312,6 +315,8 @@ url_veste_costume = "https://fr.vestiairecollective.com/search/?q=veste%20de%20c
 url_baskets = "https://fr.vestiairecollective.com/search/?q=baskets#gender=Femme%231-Homme%232_category=Chaussures%2313%20%3E%20Baskets%2330-Chaussures%233%20%3E%20Baskets%2364_categoryParent=Chaussures%2313-Chaussures%233_sold=0"
 
 # %%
+#The iterable in the zip should be in the right order
+#Here there are only one because the other brand were done at another moment.
 for brand2scrap, url in zip(brands_2_scrap_from[3], [url_jean]):
     print(brand2scrap)
     scrappinator(
