@@ -123,7 +123,7 @@ fig2 = px.histogram(
     text_auto=True,
 )
 
-with st.expander("Incidence"):
+with st.expander("Incidence toutes marques"):
     st.plotly_chart(fig2, use_container_width=True)
 
 
