@@ -109,9 +109,7 @@ if vente_prive_luxe:
     )
 if vente_prive_premium:
     df.loc[df["Segment de marché"] == "premium / luxe abordable", "prix neuf"] = (
-        2
-        * df.loc[df["Segment de marché"] == "premium / luxe abordable", "prix neuf"]
-        / 2.0
+        df.loc[df["Segment de marché"] == "premium / luxe abordable", "prix neuf"] / 2.0
     )
 
 
