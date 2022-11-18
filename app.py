@@ -77,6 +77,13 @@ with st.sidebar:
             for cat in categories
         }
 
+        vente_prive_luxe = st.checkbox(
+            "Hypothèse Vente Privée sur Luxe/Création", value=False
+        )
+        vente_prive_premium = st.checkbox(
+            "Hypothèse Vente Privée sur Premium/Luxe", value=False
+        )
+
     st.image(logo)
 
 
@@ -95,6 +102,19 @@ df["prix neuf"] = df.apply(
     ),
     axis=1,
 )
+
+if vente_prive_luxe:
+    df.loc[df["Segment de marché"] == "luxe & création", :"prix neuf"] = (
+        df.loc[df["Segment de marché"] == "luxe & création", :"prix neuf"] / 2.0
+    )
+if vente_prive_premium:
+    df.loc[df["Segment de marché"] == "premium / luxe abordable", :"prix neuf"] = (
+        2
+        * df.loc[df["Segment de marché"] == "premium / luxe abordable", :"prix neuf"]
+        / 2.0
+    )
+
+
 df["Valeur résiduelle"] = df["prix"] / df["prix neuf"]
 
 df = df[df["Valeur résiduelle"] < 1.0]
