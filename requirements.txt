@@ -10,5 +10,5 @@ streamlit
 tenacity==8.1.0
 tqdm==4.62.3
 Unidecode==1.2.0
-altar<5
+altair<5
 
